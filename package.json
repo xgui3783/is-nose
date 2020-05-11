@@ -1,0 +1,24 @@
+{
+  "name": "is-nose",
+  "version": "0.0.1",
+  "description": "image service nodejs scheduler",
+  "main": "index.js",
+  "scripts": {
+    "ds.create": "node create_ds.js",
+    "ds.ls": "node ls_ds.js",
+    "task.create": "node create_task.js",
+    "task.ls": "node ls_task.js",
+    "task.run": "node run_task.js",
+    "task.ps": "node query_task.js"
+  },
+  "author": "Xiao Gui <xgui3783@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/got": "^9.6.9",
+    "argparse": "^1.0.10",
+    "columnify": "^1.5.4",
+    "dotenv": "^8.2.0",
+    "form-data": "^3.0.0",
+    "got": "^10.6.0"
+  }
+}
