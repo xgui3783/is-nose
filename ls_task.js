@@ -59,7 +59,7 @@ const fetchData = async () => {
       {
         searchParams,
         headers: {
-          'Authorization': `bearer ${process.env.HBP_V1_JWT}`
+          ...(HBP_V1_JWT ? {'Authorization': `Bearer ${process.env.HBP_V1_JWT}`} : {})
         },
         responseType: 'json'
       }

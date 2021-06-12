@@ -14,6 +14,7 @@ const parser = new ArgumentParser({
 let privateFlagSet = false
 let publicFlagSet = false
 let showFull = false
+let useJson = false
 for (const arg of process.argv) {
   if (arg === '--private') {
     privateFlagSet = true
@@ -24,6 +25,10 @@ for (const arg of process.argv) {
 
   if (arg === '--full') {
     showFull = true
+  }
+
+  if (arg === '--json') {
+    useJson = true
   }
 }
 
@@ -67,10 +72,12 @@ const main = async () => {
       }
     })
 
+  const out = (privateFlagSet || publicFlagSet) ? filterdArr : arr
+
   process.stdout.write(
-    columnify(
-      (privateFlagSet || publicFlagSet) ? filterdArr : arr,
-    )
+    useJson
+      ? JSON.stringify(out)
+      : columnify(out)
   )
 
   process.stdout.write('\n')

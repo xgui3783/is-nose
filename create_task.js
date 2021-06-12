@@ -38,47 +38,28 @@ parser.addArgument(
 )
 
 parser.addArgument(
-  ['--stacks'],
-  {
-    help: 'Stacks of tiff',
-    defaultValue: false,
-    constant: 'stacks'
-  }
-)
-
-parser.addArgument(
-  ['--data-type'],
-  {
-    help: 'Cast type',
-    defaultValue: null,
-    constant: 'data_type'
-  }
-)
-
-parser.addArgument(
-  ['--mesh'],
-  {
-    help: 'mesh folder',
-    defaultValue: null,
-    constant: 'mesh'
-  }
-)
-
-parser.addArgument(
   ['--filter'],
   {
     help: 'If --stacks value is set, regex for the filtering of files.',
-    constant: 'filterRegex'
+    constant: 'filter'
   }
 )
 
 parser.addArgument(
-  ['--segmentation'],
+  ['--runtime-limit'],
   {
-    help: 'specify if the volume is a segmentation',
-    constant: 'segmentation',
-    defaultValue: false,
-    action: 'storeTrue'
+    help: 'runtime limit of the task',
+    defaultValue: null,
+    constant: 'runtimeLimit'
+  }
+)
+
+parser.addArgument(
+  ['--ingestion-parameters'],
+  {
+    help: 'JSON string of ingestion parameters',
+    defaultValue: null,
+    constant: 'ingestionParameters'
   }
 )
 
@@ -89,7 +70,9 @@ const args = parser.parseArgs()
 
 const postData = async () => {
   try {
-    const { dataset_id, description, url, stacks, segmentation, data_type, mesh } = args
+    const { dataset_id, description, url, ingestionParameters, runtimeLimit, filter } = args
+
+    const ingestion_parameters = JSON.parse(ingestionParameters)
     const formData = new FormData()
     const rStream = new Readable()
     const jsonObj = {
@@ -98,15 +81,9 @@ const postData = async () => {
       definition: {
         type: 'ingest',
         url,
-        ingestion_parameters: {
-          type: segmentation ? 'segmentation' : 'image',
-          ...(
-            data_type ? { data_type } : {}
-          ),
-          ...(
-            mesh ? { mesh } : {}
-          )
-        }
+        ...( runtimeLimit ? { runtimeLimit }: {} ),
+        ...( filter ? { filter }: {} ),
+        ingestion_parameters
       }
     }
     const stringified = JSON.stringify(jsonObj)
@@ -142,7 +119,7 @@ const postData = async () => {
 const main = async () => {
   try {
     const result = await postData()
-    const { id } = result
+    const { id } = JSON.parse(result)
     process.stdout.write(`Task ${id} created successfully.\n`)
   } catch (e) {
     process.stderr.write(`${e.toString()}\n`)
