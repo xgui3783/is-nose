@@ -68,7 +68,7 @@ const args = parser.parseArgs()
 
 const postData = async () => {
   try {
-    const { dataset_id, description, url, ingestion_parameters:ingestionParameters, runtimeLimit, filter } = args
+    const { dataset_id, description, url, ingestion_parameters:ingestionParameters, runtime_limit, filter } = args
     const ingestion_parameters = ingestionParameters && JSON.parse(ingestionParameters)
     
     const formData = new FormData()
@@ -79,7 +79,7 @@ const postData = async () => {
       definition: {
         type: 'ingest',
         url,
-        ...( runtimeLimit ? { runtimeLimit }: {} ),
+        ...( runtime_limit ? { runtime_limit }: {} ),
         ...( filter ? { filter }: {} ),
         ...( ingestion_parameters ? { ingestion_parameters } : {})
       }
