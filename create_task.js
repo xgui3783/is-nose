@@ -59,19 +59,17 @@ parser.addArgument(
   {
     help: 'JSON string of ingestion parameters',
     defaultValue: null,
-    constant: 'ingestionParameters'
+    constant: 'ingestion_parameters'
   }
 )
-
-// ingestion_parameters ?
 
 const args = parser.parseArgs()
 
 
 const postData = async () => {
   try {
-    const { dataset_id, description, url, ingestionParameters, runtimeLimit, filter } = args
-
+    const { dataset_id, description, url, ingestion_parameters:ingestionParameters, runtimeLimit, filter } = args
+    const ingestion_parameters = ingestionParameters && JSON.parse(ingestionParameters)
     const ingestion_parameters = JSON.parse(ingestionParameters)
     const formData = new FormData()
     const rStream = new Readable()
@@ -83,7 +81,7 @@ const postData = async () => {
         url,
         ...( runtimeLimit ? { runtimeLimit }: {} ),
         ...( filter ? { filter }: {} ),
-        ingestion_parameters
+        ...( ingestion_parameters ? { ingestion_parameters } : {})
       }
     }
     const stringified = JSON.stringify(jsonObj)
