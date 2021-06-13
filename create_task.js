@@ -70,7 +70,7 @@ const postData = async () => {
   try {
     const { dataset_id, description, url, ingestion_parameters:ingestionParameters, runtimeLimit, filter } = args
     const ingestion_parameters = ingestionParameters && JSON.parse(ingestionParameters)
-    const ingestion_parameters = JSON.parse(ingestionParameters)
+    
     const formData = new FormData()
     const rStream = new Readable()
     const jsonObj = {
