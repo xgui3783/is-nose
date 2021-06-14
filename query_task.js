@@ -32,7 +32,7 @@ const fetchData = async () => {
     `${ENDPOINT}/tasks/${taskId}`,
     {
       headers: {
-        'Authorization': `bearer ${process.env.HBP_V1_JWT}`
+        'Authorization': `Bearer ${process.env.HBP_V1_JWT}`
       },
       responseType: 'json'
     }

@@ -48,6 +48,8 @@ const t = {
 
 const { dataset_id, full } = args
 
+const { HBP_V1_JWT } = process.env
+
 const fetchData = async () => {
   const searchParams = new URLSearchParams()
   searchParams.set('per_page', 1e5)
@@ -59,7 +61,7 @@ const fetchData = async () => {
       {
         searchParams,
         headers: {
-          ...(HBP_V1_JWT ? {'Authorization': `Bearer ${process.env.HBP_V1_JWT}`} : {})
+          ...(HBP_V1_JWT ? {'Authorization': `Bearer ${HBP_V1_JWT}`} : {})
         },
         responseType: 'json'
       }
